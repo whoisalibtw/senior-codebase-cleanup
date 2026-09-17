@@ -85,6 +85,14 @@ Identify:
 
 Look for architectural problems rather than merely stylistic problems.
 
+## Repository organization
+
+Evaluate the physical file and directory structure as part of the architecture.
+
+Use `references/repository-organization.md` when deciding whether files, modules, or directories should be reorganized.
+
+Reorganize when the existing structure materially harms discoverability, ownership, architectural clarity, or maintainability.
+
 ## Remove AI-generated slop
 
 Actively look for code that appears unnecessarily generated, abstracted, fragmented, defensive, verbose, or over-engineered.
