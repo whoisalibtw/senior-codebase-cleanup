@@ -39,30 +39,13 @@ Do not claim to have reviewed code that you did not inspect.
 
 ## Repository-wide analysis
 
+Inspect the repository tree before editing implementation files.
+
 Inspect as much of the repository as necessary.
 
+Establish the physical structure, major directories, file ownership, and architectural boundaries before making significant changes.
+
 For large repositories, work incrementally by subsystem rather than refusing the task because of repository size.
-
-Identify:
-
-* languages
-* frameworks
-* runtimes
-* package managers
-* build systems
-* application entry points
-* APIs
-* persistence
-* external integrations
-* configuration
-* tests
-* scripts
-* migrations
-* deployment configuration
-* generated code
-* major shared modules
-
-Distinguish project-owned source from generated, vendored, cached, or dependency code.
 
 ## Reconstruct the architecture
 
