@@ -87,156 +87,23 @@ Look for architectural problems rather than merely stylistic problems.
 
 ## Remove AI-generated slop
 
-Actively look for code that appears unnecessarily generated, abstracted, fragmented, defensive, or verbose.
+Actively look for code that appears unnecessarily generated, abstracted, fragmented, defensive, verbose, or over-engineered.
 
-Common examples include:
+Use the detailed detection patterns in:
 
-### Unnecessary wrappers
+`references/ai-slop-patterns.md`
 
-Remove wrappers that add no meaningful behavior.
+For each suspicious pattern:
 
-Examples:
+1. determine whether it serves a real purpose
+2. identify its consumers and dependencies
+3. determine whether it represents a meaningful boundary
+4. determine whether removing it could change behavior
+5. prefer the simplest implementation that preserves the real responsibility
 
-* a service that only forwards to one function
-* a manager around another manager
-* an adapter around a single direct call
-* a factory that only creates one known implementation
-* an interface implemented by one trivial class without architectural value
-* a function whose only purpose is calling another function
+Do not refactor code merely because it looks unfamiliar or differs from your preferred style.
 
-Do not remove a layer if it represents a real boundary.
-
-### Artificial fragmentation
-
-Look for:
-
-* tiny files containing one trivial function
-* excessive folder nesting
-* one-function modules
-* components split only to reduce line count
-* helpers used once
-* pointless index/barrel files
-* unnecessary wrapper components
-
-Consolidate code when doing so improves comprehension.
-
-Do not fragment code simply to make files smaller.
-
-### Generic abstraction
-
-Be suspicious of vague concepts such as:
-
-* Manager
-* Handler
-* Processor
-* Engine
-* Helper
-* Utility
-* Provider
-* Coordinator
-* Orchestrator
-
-These names are not automatically wrong.
-
-Determine whether the abstraction represents a real concept.
-
-Prefer precise domain-oriented names and responsibilities.
-
-### Over-engineering
-
-Identify unnecessary:
-
-* factories
-* strategies
-* adapters
-* dependency injection
-* generic frameworks
-* configuration layers
-* state layers
-* abstraction layers
-* event plumbing
-* indirection
-
-Remove them when direct code is clearer and behavior remains equivalent.
-
-### Repetition
-
-Find duplicated:
-
-* business logic
-* validation
-* transformations
-* authorization checks
-* API calls
-* persistence logic
-* state logic
-* constants
-* configuration
-
-Consolidate genuine duplication.
-
-Do not force unrelated concepts into a shared abstraction merely because they look similar.
-
-### Comment sludge
-
-Remove comments that merely describe what obvious code is doing.
-
-Keep comments that explain:
-
-* why unusual behavior exists
-* non-obvious invariants
-* security decisions
-* compatibility constraints
-* external limitations
-* difficult algorithms
-* business rules that cannot be expressed clearly in code
-
-### Defensive-programming spam
-
-Look for repeated checks and defensive branches that exist without a meaningful reason.
-
-Do not blindly remove validation.
-
-Instead determine where validation belongs and avoid repeatedly enforcing the same invariant throughout unrelated layers.
-
-### Type-system abuse
-
-Look for:
-
-* unnecessary generic types
-* giant conditional types
-* redundant interfaces
-* duplicate type definitions
-* excessive type assertions
-* meaningless type aliases
-* `any` used to hide problems
-* types that are harder to understand than the code they describe
-
-Simplify types when the simpler representation expresses the same contract.
-
-### Error-handling theater
-
-Look for error handling that destroys useful information.
-
-Do not catch an error merely to rethrow a generic error.
-
-Preserve useful context.
-
-Only transform errors when there is a meaningful boundary, recovery strategy, or additional context to provide.
-
-### Logging spam
-
-Remove meaningless or redundant logs.
-
-Do not keep:
-
-* function-entry spam
-* duplicate logs
-* development debugging accidentally left in production
-* secrets or sensitive data
-* logs with no useful diagnostic value
-
-Keep meaningful operational logging.
+Do not assume every pattern in the reference is bad.
 
 ## Preserve behavior
 
@@ -504,3 +371,83 @@ Prefer cohesive over fragmented.
 Prefer direct over unnecessarily abstract.
 
 Prefer understandable over impressive.
+
+## Verification integrity
+
+Never claim that behavior was preserved, functionality is working, or a change is fully verified unless the relevant behavior was actually inspected, tested, or otherwise directly verified.
+
+Do not use absolute claims such as:
+
+- "100% preserved"
+- "everything still works"
+- "fully verified"
+- "no regressions"
+- "all behavior is unchanged"
+
+unless the evidence genuinely supports that claim.
+
+When reporting results, distinguish clearly between:
+
+### VERIFIED
+Things directly confirmed through tests, builds, static analysis, execution, or inspection.
+
+### INFERRED
+Things that appear correct based on code analysis but were not directly tested.
+
+### NOT VERIFIED
+Important behavior that could not be tested or confirmed.
+
+Be honest about uncertainty.
+
+Never fabricate test results, coverage, runtime behavior, successful interactions, or regression status.
+
+## Skill self-protection
+
+The skill itself is not part of the target application.
+
+Do not:
+
+- modify `SKILL.md`
+- copy the skill into another location
+- reinstall the skill
+- alter agent configuration
+- modify skill-discovery files
+
+unless the user explicitly asks you to manage or modify the skill itself.
+
+When this skill is being used on a repository, focus the cleanup on the target codebase.
+
+## Final report
+
+At the end of the cleanup, provide a concise engineering report.
+
+Include:
+
+### Changes made
+Summarize the highest-value structural and maintainability changes.
+
+### Problems found
+Summarize the most important issues discovered in the repository.
+
+### Verification
+Report the actual commands, checks, tests, builds, and inspections performed and their results.
+
+### Remaining risk
+Identify important areas that remain uncertain, untested, or risky.
+
+### Not changed
+Identify significant areas intentionally left untouched and explain why.
+
+Do not produce a long narrative.
+
+Prefer concrete evidence over adjectives.
+
+For example:
+
+- `npm run build` — passed
+- `npm test` — 184 passed, 2 failed
+- `src/auth/*` — refactored; integration behavior not directly tested
+- payment flow — not modified
+- runtime browser interactions — not verified
+
+Never turn an inference into a verification claim.
