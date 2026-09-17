@@ -403,19 +403,20 @@ Never fabricate test results, coverage, runtime behavior, successful interaction
 
 ## Skill self-protection
 
-The skill itself is not part of the target application.
+The skill instructions and their supporting reference files are tooling, not part of the target application's codebase.
 
-Do not:
+The agent may encounter the skill through a project-local or agent-specific location such as:
 
-- modify `SKILL.md`
-- copy the skill into another location
-- reinstall the skill
-- alter agent configuration
-- modify skill-discovery files
+- `.agents/skills/`
+- `.claude/skills/`
+- `.codex/skills/`
+- another agent-specific skill directory
 
-unless the user explicitly asks you to manage or modify the skill itself.
+Do not modify, refactor, delete, or "clean up" the skill itself unless the user explicitly asks you to manage the skill.
 
-When this skill is being used on a repository, focus the cleanup on the target codebase.
+The agent may leave the skill in whatever location the host agent requires for discovery and execution.
+
+When cleaning a repository, distinguish skill infrastructure from the application's source code.
 
 ## Final report
 
@@ -451,3 +452,25 @@ For example:
 - runtime browser interactions — not verified
 
 Never turn an inference into a verification claim.
+
+
+## Non-runtime artifacts
+
+Do not delete documentation, examples, sample configuration, fixtures, assets, migrations, scripts, or other non-runtime files merely because they are not imported by application code.
+
+Before removing such a file, determine whether it serves:
+
+- developer onboarding
+- local setup
+- documentation
+- testing
+- deployment
+- migration
+- debugging
+- examples
+- design/source assets
+- external tooling
+
+Only remove it when there is strong evidence that it is obsolete, misleading, redundant, or intentionally abandoned.
+
+When uncertain, preserve it and report it as a potential cleanup item rather than deleting it.
